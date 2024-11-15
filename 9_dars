@@ -1,0 +1,153 @@
+-- 1
+drop table if exists categories
+drop table if exists products
+
+
+
+create table if not exists categories(
+	category_id serial primary key,
+	categor_count int not null,
+	category varchar(50) not null
+ );
+ INSERT INTO categories (categor_count, category) VALUES
+(100, 'Electronics'),
+(200, 'Clothing'),
+(150, 'Home & Kitchen'),
+(120, 'Sports'),
+(300, 'Beauty & Personal Care'),
+(250, 'Books'),
+(180, 'Toys & Games'),
+(220, 'Automotive'),
+(110, 'Food & Beverages'),
+(130, 'Health & Wellness'),
+(140, 'Furniture'),
+(160, 'Jewelry'),
+(170, 'Music'),
+(190, 'Tools & Home Improvement'),
+(210, 'Office Supplies');
+
+ create table if not exists products(
+	product_id serial primary key,
+	product_name varchar(50),
+	product_color varchar(50),
+	product_price numeric(5,2),
+	category_id int references categories(category_id)
+	);
+	INSERT INTO products (product_name, product_color, product_price, category_id) VALUES
+('Laptop', 'Silver', 999.99, 1),
+('Smartphone', 'Black', 799.99, 1),
+('Television', 'Black', 499.99, 1),
+('Washing Machine', 'White', 399.99, 3),
+('Blender', 'Red', 59.99, 3),
+('Shirt', 'Blue', 29.99, 2),
+('Jeans', 'Denim', 49.99, 2),
+('Basketball', 'Orange', 19.99, 4),
+('Tennis Racket', 'White', 89.99, 4),
+('Shampoo', 'Green', 12.99, 5),
+('Lipstick', 'Red', 15.99, 5),
+('Novel', 'N/A', 12.99, 6),
+('Board Game', 'Multi-color', 29.99, 7),
+('Car Battery', 'Black', 119.99, 8),
+('Coffee Maker', 'Black', 89.99, 9);
+
+
+
+
+select categories.category_id, categories.category, products.product_id, 
+products.product_name from products inner join categories on products.category_id = categories.category_id;  
+
+select categories.category_id, categories.category, products.product_id, 
+products.product_name from products right join categories on products.category_id = categories.category_id;  
+
+select categories.category_id, categories.category, products.product_id, 
+products.product_name from products left join categories on products.category_id = categories.category_id;  
+
+select categories.category_id, categories.category, products.product_id, 
+products.product_name from products left join categories on products.category_id = categories.category_id
+where categories.category_id is null;
+
+select categories.category_id, categories.category from categories left join products on  categories.category_id= products.category_id
+where product_id is null;
+
+select categories.category_id, categories.category, products.product_id , products.product_name 
+from  categories full join products
+on categories.category_id = products.category_id;
+
+select categories.category_id, categories.category, products.product_id , products.product_name 
+from  categories full join products on categories.category_id=products.category_id
+where categories.category_id is null or products.product_id	is null;
+
+select categories.category_id, categories.category from categories cross join products
+
+select categories.category_id, categories.category from categories natural join products
+
+
+
+
+
+
+
+
+-- 2 self join uchun table
+drop table if exists employees
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(50),
+    manager_id INT,
+    FOREIGN KEY (manager_id) REFERENCES employees(employee_id)
+);
+INSERT INTO employees (employee_id, employee_name, manager_id) VALUES
+(1, 'John Doe', NULL),  
+(2, 'Jane Smith', 1),   
+(3, 'Alice Johnson', 1),
+(4, 'Bob Brown', 2),    
+(5, 'Eve White', 3);   
+
+SELECT e.employee_name AS employee, m.employee_name AS manager
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.employee_id;
+
+
+
+
+
+
+-- 3
+drop table if exists actors
+
+drop table if exists movies
+
+drop table if exists movies_actors
+
+create table if not exists actors(
+	id  serial primary key,
+	actor_name varchar(50) not null
+);
+
+insert into actors(actor_name)values
+('Mr.Smit'),
+('Michail Jacson'),
+('P Didy'),
+('Mayk Tayson')
+;
+
+create table if  not exists movies(
+	id serial primary key,
+	movies_name varchar(50) not null,
+	ganere	varchar(50) not null
+	);
+insert into movies(movies_name, ganere, actor_id)values
+('ajdarxo jangchisi', 'qorqinchili', 1),
+('batmen', ' kulguli', 2),
+('orgimchak odam 150', 'dacumentalni', 3),
+('polterges', 'yiglatadigan', 4)
+;
+
+create table if not exists movies_actors(
+	id serial primary key,
+	actors_id	int,
+	movies_id	int,
+	foreign key (actors_id)	references actors(id),
+	foreign key (movies_id) references	movies(id)
+);
+select * from movies_actors;
